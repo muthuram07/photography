@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 type CloudinaryResource = {
   public_id: string;
   secure_url: string;
@@ -25,7 +28,7 @@ function toAltText(publicId: string): string {
 }
 
 function transformedUrl(secureUrl: string): string {
-  return secureUrl.replace("/upload/", "/upload/f_auto,q_auto,w_1600/");
+  return secureUrl.replace("/upload/", "/upload/f_auto,q_auto,w_1200/");
 }
 
 function isLikelyPersonalUpload(publicId: string): boolean {
@@ -56,13 +59,17 @@ export async function GET() {
     return NextResponse.json(
       {
         error:
-          "Missing Cloudinary credentials. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in .env.local",
+          "Missing Cloudinary credentials. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in environment variables.",
       },
       { status: 500 }
     );
   }
 
   const configuredFolder = (process.env.CLOUDINARY_PORTFOLIO_FOLDER || "").trim();
+  const configuredMax = Number.parseInt(process.env.CLOUDINARY_MAX_IMAGES || "30", 10);
+  const maxImages = Number.isFinite(configuredMax)
+    ? Math.min(Math.max(configuredMax, 12), 80)
+    : 30;
   const folderPrefix = configuredFolder
     ? configuredFolder.endsWith("/")
       ? configuredFolder
@@ -126,6 +133,10 @@ export async function GET() {
         src: transformedUrl(resource.secure_url),
         alt: toAltText(resource.public_id),
       });
+
+      if (images.length >= maxImages) {
+        break;
+      }
     }
 
     galleryCache = {

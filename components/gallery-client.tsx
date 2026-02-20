@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import InfiniteGallery from "@/components/ui/3d-gallery-photography";
-import { Camera } from "lucide-react";
 
 type GalleryImage = {
   src: string;
@@ -19,7 +18,7 @@ export default function GalleryClientPage() {
 
     const loadImages = async () => {
       try {
-        const response = await fetch("/api/gallery-images", { cache: "no-store" });
+        const response = await fetch("/api/gallery-images");
         const data = (await response.json()) as {
           images?: GalleryImage[];
           error?: string;
@@ -68,9 +67,10 @@ export default function GalleryClientPage() {
         </h1>
       </div>
 
-      <div className="fixed top-6 left-6 z-20 pointer-events-none flex items-center gap-2 text-slate-900">
-        <Camera className="h-5 w-5" strokeWidth={2.25} />
-        <span className="font-serif text-lg tracking-wide lowercase">photography</span>
+      <div className="fixed right-6 bottom-6 z-20 pointer-events-none">
+        <p className="font-serif text-sm tracking-[0.28em] uppercase text-white/70 bg-black/25 px-2 py-1 rounded-sm backdrop-blur-[2px] [text-shadow:0_0_16px_rgba(0,0,0,0.65)]">
+          Muthuraman
+        </p>
       </div>
 
       <div className="text-center fixed bottom-10 left-0 right-0 font-mono uppercase text-[11px] font-semibold text-slate-900">
