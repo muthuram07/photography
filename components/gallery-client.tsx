@@ -67,12 +67,6 @@ export default function GalleryClientPage() {
         </h1>
       </div>
 
-      <div className="fixed right-6 bottom-6 z-20 pointer-events-none">
-        <p className="font-serif text-sm tracking-[0.28em] uppercase text-white/70 bg-black/25 px-2 py-1 rounded-sm backdrop-blur-[2px] [text-shadow:0_0_16px_rgba(0,0,0,0.65)]">
-          Muthuraman
-        </p>
-      </div>
-
       <div className="text-center fixed bottom-10 left-0 right-0 font-mono uppercase text-[11px] font-semibold text-slate-900">
         {loading ? <p>Loading your Cloudinary portfolio...</p> : null}
         {error ? <p className="text-red-300">{error}</p> : null}
